@@ -104,6 +104,3 @@ class LinkList:
     def remove_last(self):
         return self.remove(self.__size - 1)
 
-
-
-
