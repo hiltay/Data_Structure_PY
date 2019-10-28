@@ -6,7 +6,6 @@
 
 
 class OrderList:
-
     class __Node:
         def __init__(self, data=None, next=None):
             if data is None:
