@@ -28,7 +28,7 @@ class BST:
     def add(self, e,):
         self.__root = self.__add(self.__root, e)
 
-    # 以node为根添加元素e
+    # 以node为根添加元素e(递归实现)
     def __add(self, node, e):
         if node is None:
             self.__size += 1
@@ -39,3 +39,16 @@ class BST:
         if e > node.elem:
             node.rchild = self.__add(node.rchild, e)
         return node
+
+    # 查询是否包含元素e(递归实现)
+    def search(self, e):
+        return self.__search(self.__root, e) is not None
+
+    # 以node为根的树是否包含e，包含返回该node，否则返回None
+    def __search(self, node, e):
+        if node is None or node.elem == e:
+            return node
+        if e < node.elem:
+            return self.__search(node.lchild, e)
+        else:
+            return self.__search(node.rchild, e)
