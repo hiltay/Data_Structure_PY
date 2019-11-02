@@ -25,7 +25,7 @@ class BST:
         return self.__size == 0
 
     # 添加元素
-    def add(self, e,):
+    def add(self, e):
         self.__root = self.__add(self.__root, e)
 
     # 以node为根添加元素e(递归实现)
@@ -60,3 +60,36 @@ class BST:
         #     else:
         #         node = node.rchild
         # return node
+
+    # 前序遍历
+    def preorder(self):
+        self.__preorder(self.__root)
+
+    # 以node为根进行前序遍历
+    def __preorder(self, node):
+        if node:
+            print(node.elem)
+            self.__preorder(node.lchild)
+            self.__preorder(node.rchild)
+
+    # 中序遍历
+    def inorder(self):
+        self.__inorder(self.__root)
+
+    # 以node为根进行中序遍历
+    def __inorder(self, node):
+        if node:
+            self.__inorder(node.lchild)
+            print(node.elem)
+            self.__inorder(node.rchild)
+
+    # 后序遍历
+    def postorder(self):
+        self.__postorder(self.__root)
+
+    # 以node为根进行后序遍历
+    def __postorder(self, node):
+        if node:
+            self.__postorder(node.lchild)
+            self.__postorder(node.rchild)
+            print(node.elem)
