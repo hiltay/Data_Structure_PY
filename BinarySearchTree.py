@@ -52,3 +52,11 @@ class BST:
             return self.__search(node.lchild, e)
         else:
             return self.__search(node.rchild, e)
+        # 《算导》里说迭代的效率更高
+        # 迭代实现:
+        # while node is not None and e != node.elem:
+        #     if e < node.elem:
+        #         node = node.lchild
+        #     else:
+        #         node = node.rchild
+        # return node
