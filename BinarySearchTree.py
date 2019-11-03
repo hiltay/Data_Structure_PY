@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+import LinkListStack
+import LinkListQueue
 
 
 # 二叉搜索树,不含重复元素
@@ -61,7 +63,7 @@ class BST:
         #         node = node.rchild
         # return node
 
-    # 前序遍历
+    # 前序遍历，最常用
     def preorder(self):
         self.__preorder(self.__root)
 
@@ -72,7 +74,20 @@ class BST:
             self.__preorder(node.lchild)
             self.__preorder(node.rchild)
 
-    # 中序遍历
+    # 前序遍历非递归实现
+    def preorderNR(self):
+        # 利用栈记录
+        stack = LinkListStack.LinkListStack()
+        stack.push(self.__root)
+        while not stack.is_empty():
+            node = stack.pop()
+            print(node.elem)
+            if node.rchild:
+                stack.push(node.rchild)
+            if node.lchild:
+                stack.push(node.lchild)
+
+    # 中序遍历, 遍历结果是顺序的
     def inorder(self):
         self.__inorder(self.__root)
 
@@ -83,7 +98,7 @@ class BST:
             print(node.elem)
             self.__inorder(node.rchild)
 
-    # 后序遍历
+    # 后序遍历，应用举例：释放内存的过程
     def postorder(self):
         self.__postorder(self.__root)
 
@@ -93,3 +108,74 @@ class BST:
             self.__postorder(node.lchild)
             self.__postorder(node.rchild)
             print(node.elem)
+
+    # 层序遍历
+    def levleorder(self):
+        # 利用队列
+        queue = LinkListQueue.LinkListQueue()
+        queue.put(self.__root)
+        while not queue.is_empty():
+            node = queue.get()
+            print(node.elem)
+            if node.lchild:
+                queue.put(node.lchild)
+            if node.rchild:
+                queue.put(node.rchild)
+
+    # 寻找最小元素
+    def minelem(self):
+        if self.__size == 0:
+            raise Exception("BST is empty.")
+        return self.__minelem(self.__root).elem
+
+    # 寻找node为根的最小元素
+    def __minelem(self, node):
+        if node.lchild is None:
+            return node
+        return self.__minelem(node.lchild)
+
+    # 删除最小元素(递归实现)
+    def removemin(self):
+        r = self.minelem()
+        self.__root = self.__removemin(self.__root)
+        return r
+
+    # 删除node为根的最小元素,返回删除后新树的根
+    def __removemin(self, node):
+        if node.lchild is None:
+            # 保存其右子树
+            rightnode = node.rchild
+            node.rchild = None
+            self.__size -= 1
+            return rightnode
+        node.lchild = self.__removemin(node.lchild)
+        return node
+
+    # 寻找最大元素
+    def maxelem(self):
+        if self.__size == 0:
+            raise Exception("BST is empty.")
+        return self.__maxelem(self.__root).elem
+
+    # 寻找node为根的最大元素
+    def __maxelem(self, node):
+        if node.rchild is None:
+            return node
+        return self.__maxelem(node.rchild)
+
+    # 删除最大元素(递归实现)
+    def removemax(self):
+        r = self.maxelem()
+        self.__root = self.__removemax(self.__root)
+        return r
+
+    # 删除node为根的最大元素,返回删除后新树的根
+    def __removemax(self, node):
+        if node.rchild is None:
+            # 保存其左子树
+            leftnode = node.lchild
+            node.lchild = None
+            self.__size -= 1
+            return leftnode
+        node.rchild = self.__removemax(node.rchild)
+        return node
