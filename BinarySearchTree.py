@@ -179,3 +179,59 @@ class BST:
             return leftnode
         node.rchild = self.__removemax(node.rchild)
         return node
+
+    # 删除元素e
+    def remove(self, e):
+        self.__root = self.__remove(self.__root, e)
+
+    # 删除以node为根的树中元素e.返回删除后的树的根
+    def __remove(self, node, e):
+        if node is None:
+            return None
+        if e < node.elem:
+            node.lchild = self.__remove(node.lchild, e)
+            return node
+        if e > node.elem:
+            node.rchild = self.__remove(node.rchild, e)
+            return node
+        # 找到待删除元素e
+        if e == node.elem:
+            # node左孩子为空,用其右孩子替换node
+            if node.lchild is None:
+                rightnode = node.rchild
+                node.rchild = None
+                self.__size -= 1
+                return rightnode
+            # node右孩子为空,用其左孩子替换node
+            if node.rchild is None:
+                leftnode = node.lchild
+                node.lchild = None
+                self.__size -= 1
+                return leftnode
+            # node既有左孩子,又有右孩子
+            if node.lchild and node.rchild:
+                # 找到node的后继 todo：也可以找node的前驱
+                successor = self.__minelem(node.rchild)
+                successor.rchild = self.__removemin(node.rchild)
+                successor.lchild = node.lchild
+                node.lchild = node.rchild = None
+                return successor
+
+
+"""
+测试用例
+tree = BST()
+tree.add(6)
+tree.add(3)
+tree.add(2)
+tree.add(0)
+tree.add(5)
+tree.add(10)
+tree.add(13)
+tree.add(20)
+tree.add(7)
+tree.add(8)
+# tree.preorder()
+tree.remove(6)
+tree.preorder()
+"""
