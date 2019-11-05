@@ -25,7 +25,7 @@ class LinkList:
         return self.__size == 0
 
     # 从中间添加一个元素
-    def insert(self,  index, e):
+    def insert(self, index, e):
         if index > self.__size or index < 0:
             raise Exception("Index is illegal.")
         # 从虚拟头结点开始
@@ -83,7 +83,7 @@ class LinkList:
             p = p.next
         return False
 
-    # 移除元素e
+    # 移除索引位置的元素
     def remove(self, index):
         if index >= self.__size or index < 0:
             raise Exception("Index is illegal.")
