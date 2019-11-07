@@ -123,4 +123,11 @@ class Array:
             new_array.data[i] = self.data[i]
         self.data = new_array.data
 
+    # 交换i,j索引对应的元素
+    def swap(self, i, j):
+        if i < 0 or i >= self.size and j < 0 or j >= self.size:
+            raise Exception("Swap failed.Index is illegal.")
+        tmp = self.data[i]
+        self.data[i] = self.data[j]
+        self.data[j] = tmp
 
