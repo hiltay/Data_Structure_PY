@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-# 循环队列、数组队列、内置队列的性能测试
 import random
 import time
 import CircularQueue
 import ArrayQueue
 import queue
+import Array
 import MaxHeap
-
+# 循环队列、数组队列、内置队列的性能测试
 # def test(q: object, opcount: int) -> float:
 #     starttime = time.time()
 #     i = 0
@@ -32,14 +32,14 @@ import MaxHeap
 
 
 # 最大堆测试
-li = []
-heap = MaxHeap.MaxHeap()
-for i in range(100000):
-    heap.add(random.random())
-
-for i in range(100000):
-    li.append(heap.extract_max())
-
-for i in range(99999):
-    if li[i] < li[i+1]:
-        print("错误")
+# li = []
+# heap = MaxHeap.MaxHeap()
+# for i in range(100000):
+#     heap.add(random.random())
+#
+# for i in range(100000):
+#     li.append(heap.extract_max())
+#
+# for i in range(99999):
+#     if li[i] < li[i+1]:
+#         print("发生错误")

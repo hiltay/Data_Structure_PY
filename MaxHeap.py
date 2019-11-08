@@ -60,9 +60,9 @@ class MaxHeap:
         self.__siftdown(0)
         return ret
 
-    # index位置元素下沉,使其符合最大堆的性质,《算导》第三版6.2也叫Heapify
+    # index位置元素下沉,使其符合最大堆的性质
     def __siftdown(self, index):
-        # 递归实现
+        # 递归实现,可用于heapify
         l = self.lchild(index)
         r = self.rchild(index)
         if l <= self.get_size() - 1 and self.__data.get(l) > self.__data.get(index):
@@ -93,5 +93,12 @@ class MaxHeap:
     def findmax(self):
         return self.__data.get_first()
 
-
+    # 取出最大元素,用e替换
+    def replace(self, e):
+        if self.get_size() == 0:
+            raise Exception("Heap is empty.")
+        max = self.__data.get_first()
+        self.__data.set(0, e)
+        self.__siftdown(0)
+        return max
 
