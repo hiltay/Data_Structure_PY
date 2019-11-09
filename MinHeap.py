@@ -3,8 +3,8 @@
 import Array
 
 
-# 最大堆,数组实现
-class MaxHeap:
+# 最小堆,数组实现
+class MinHeap:
     def __init__(self, capacity=10):
         self.__data = Array.Array(capacity)
 
@@ -36,22 +36,22 @@ class MaxHeap:
         self.__data.add_last(e)
         self.__siftup(self.__data.get_size() - 1)
 
-    # 将index位置的元素上浮,使其符合最大堆的性质
+    # 将index位置的元素上浮,使其符合最小堆的性质
     def __siftup(self, index):
         # 递归写法
-        if index == 0 or self.__data.get(index) <= self.__data.get(self.parent(index)):
+        if index == 0 or self.__data.get(index) >= self.__data.get(self.parent(index)):
             return
         else:
             self.__data.swap(index, self.parent(index))
             self.__siftup(self.parent(index))
 
         # 迭代写法
-        # while index > 0 and self.__data.get(index) > self.__data.get(self.parent(index)):
+        # while index > 0 and self.__data.get(index) < self.__data.get(self.parent(index)):
         #     self.__data.swap(index, self.parent(index))
         #     index = self.parent(index)
 
-    # 移除并返回堆中最大元素(根结点元素)
-    def extract_max(self):
+    # 移除并返回堆中最小元素(根结点元素)
+    def extract_min(self):
         if self.get_size() <= 0:
             raise Exception("Heap underflow.")
         ret = self.__data.get_first()
@@ -60,45 +60,45 @@ class MaxHeap:
         self.__siftdown(0)
         return ret
 
-    # index位置元素下沉,使其符合最大堆的性质
+    # index位置元素下沉,使其符合最小堆的性质
     def __siftdown(self, index):
         # 递归实现,可用于heapify
         l = self.lchild(index)
         r = self.rchild(index)
-        if l <= self.get_size() - 1 and self.__data.get(l) > self.__data.get(index):
-            largest = l
+        if l <= self.get_size() - 1 and self.__data.get(l) < self.__data.get(index):
+            min = l
         else:
-            largest = index
-        if r <= self.get_size() - 1 and self.__data.get(r) > self.__data.get(largest):
-            largest = r
-        # 如果最大元素是index的某个孩子结点,交换两个结点的值
-        if largest != index:
-            self.__data.swap(index, largest)
-            self.__siftdown(largest)
+            min = index
+        if r <= self.get_size() - 1 and self.__data.get(r) < self.__data.get(min):
+            min = r
+        # 如果最小元素是index的某个孩子结点,交换两个结点的值
+        if min != index:
+            self.__data.swap(index, min)
+            self.__siftdown(min)
 
         # 迭代实现
         # while self.lchild(index) < self.__data.get_size():
         #     left = self.lchild(index)
-        #     # 如果index右孩子存在,且比左孩子大,left+=1,此时left是两个孩子中最大的那个
-        #     if left + 1 < self.__data.get_size() and self.__data.get(left) < self.__data.get(left + 1):
+        #     # 如果index右孩子存在,且比左孩子小,left+=1,此时left是两个孩子中最小的那个
+        #     if left + 1 < self.__data.get_size() and self.__data.get(left) > self.__data.get(left + 1):
         #         left += 1
-        #     # index和最大的孩子比较
-        #     if self.__data.get(left) <= self.__data.get(index):
+        #     # index和最小的孩子比较
+        #     if self.__data.get(left) >= self.__data.get(index):
         #         return
         #     else:
         #         self.__data.swap(left, index)
         #         index = left
 
-    # 查看堆中最大元素
-    def findmax(self):
+    # 查看堆中最小元素
+    def findmin(self):
         return self.__data.get_first()
 
-    # 取出最大元素,用e替换
+    # 取出最小元素,用e替换
     def replace(self, e):
         if self.get_size() == 0:
             raise Exception("Heap is empty.")
-        max = self.__data.get_first()
+        min = self.__data.get_first()
         self.__data.set(0, e)
         self.__siftdown(0)
-        return max
+        return min
 

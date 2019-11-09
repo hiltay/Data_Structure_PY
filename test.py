@@ -7,28 +7,31 @@ import ArrayQueue
 import queue
 import Array
 import MaxHeap
-# 循环队列、数组队列、内置队列的性能测试
-# def test(q: object, opcount: int) -> float:
-#     starttime = time.time()
-#     i = 0
-#     while i < opcount:
-#         q.put(random.random())
-#         i += 1
-#     i = 0
-#     while i < opcount:
-#         q.get()
-#         i += 1
-#     endtime = time.time()
-#     return endtime - starttime
-#
-#
-# Q1 = ArrayQueue.ArrayQueue()
-# Q2 = CircularQueue.CircularQueue()
-# Q3 = queue.Queue()
-# t1 = test(Q1, 5000)
-# t2 = test(Q2, 5000)
-# t3 = test(Q3, 5000)
-# print(t1, t2, t3,)
+import PriorityQueue
+# 循环队列、数组队列、内置队列、优先队列的性能测试
+def test(q: object, opcount: int) -> float:
+    starttime = time.time()
+    i = 0
+    while i < opcount:
+        q.put(random.random())
+        i += 1
+    i = 0
+    while i < opcount:
+        q.get()
+        i += 1
+    endtime = time.time()
+    return endtime - starttime
+
+
+Q1 = ArrayQueue.ArrayQueue()
+Q2 = CircularQueue.CircularQueue()
+Q3 = queue.Queue()
+Q4 = PriorityQueue.PriorityQueue()
+t1 = test(Q1, 5000)
+t2 = test(Q2, 5000)
+t3 = test(Q3, 5000)
+t4 = test(Q4,5000)
+print(t1, t2, t3, t4)
 
 
 # 最大堆测试

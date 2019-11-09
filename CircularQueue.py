@@ -14,6 +14,7 @@ class CircularQueue:
         for i in range(capacity + 1):
             self.queue.append(None)
 
+    # 获取容量
     def get_capacity(self):
         return len(self.queue) - 1
 
