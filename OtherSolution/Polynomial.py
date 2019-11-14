@@ -14,7 +14,7 @@ class Polynomail:
         self.head = self.__Node()
         self.__lenth = 0  # 项数
 
-    # 输入系数和指数[coef,expn],[(3,2),(7,6),(0.3,5)]创建一元多项式
+    # 输入系数和指数创建一元多项式
     def create_polyn(self):
         inp = input("输入系数和指数,逗号分隔,任意字母结束>>>").split(",")
         while len(inp) == 2:
