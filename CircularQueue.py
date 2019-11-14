@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 
-# 基于列表实现，循环队列,dequeue复杂度为O(1)
+# 基于列表实现,循环队列,dequeue复杂度为O(1)
 class CircularQueue:
     # 队首指针front，队尾指针rear
     def __init__(self, capacity=10):
