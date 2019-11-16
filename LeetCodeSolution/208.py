@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+
+class Trie:
+    class __Node:
+        def __init__(self, isword=False):
+            self.isword = isword
+            self.next = [None] * 26
+
+    def __init__(self):
+        self.__root = self.__Node()
+        self.__size = 0  # 单词数
+    def insert(self, word: str) -> None:
+        current = self.__root
+        for char in word:
+            index = ord(char.lower()) - ord('a')
+            if current.next[index] is None:
+                current.next[index] = self.__Node()
+            current = current.next[index]
+        if not current.isword:
+            current.isword = True
+            self.__size += 1
+
+    def search(self, word: str) -> bool:
+        current = self.__root
+        for char in word:
+            index = ord(char.lower()) - ord('a')
+            if current.next[index] is None:
+                return False
+            current = current.next[index]
+        # 此时Trie中不一定包含要找的单词，如在panda中查询pan，遍历完'pan'但'n'结点isword == False
+        return current.isword  # 根据isword判断
+
+    def startsWith(self, prefix: str) -> bool:
+        current = self.__root
+        for char in prefix:
+            index = ord(char.lower()) - ord('a')
+            if current.next[index] is None:
+                return False
+            current = current.next[index]
+        # prefix在Trie中都有相应的结点,直接返回True
+        return True
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)
