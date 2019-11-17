@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# 由于python特性，不需要泛型
-
-
+# 数组
 class Array:
     # 构造函数，传入数组容量capacity构造Array；使用python中列表来创建数组
     def __init__(self, capacity=10):
