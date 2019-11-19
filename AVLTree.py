@@ -179,17 +179,6 @@ class AVLTree:
             return node
         return self.__minelem(node.lchild)
 
-    # 删除node为根的最小元素,返回删除后新树的根
-    def __removemin(self, node):
-        if node.lchild is None:
-            # 保存其右子树
-            rightnode = node.rchild
-            node.rchild = None
-            self.__size -= 1
-            return rightnode
-        node.lchild = self.__removemin(node.lchild)
-        return node
-
     # 删除key对应结点,并返回value
     def remove(self, key):
         node = self.__getnode(self.__root, key)
@@ -201,12 +190,13 @@ class AVLTree:
     def __remove(self, node, key):
         if node is None:
             return None
+        retnode = None
         if key < node.key:
             node.lchild = self.__remove(node.lchild, key)
-            return node
+            retnode = node
         if key > node.key:
             node.rchild = self.__remove(node.rchild, key)
-            return node
+            retnode = node
         # 找到待删除结点
         if key == node.key:
             # node左孩子为空,用其右孩子替换node
@@ -214,18 +204,44 @@ class AVLTree:
                 rightnode = node.rchild
                 node.rchild = None
                 self.__size -= 1
-                return rightnode
+                retnode = rightnode
             # node右孩子为空,用其左孩子替换node
-            if node.rchild is None:
+            elif node.rchild is None:
                 leftnode = node.lchild
                 node.lchild = None
                 self.__size -= 1
-                return leftnode
+                retnode = leftnode
             # node既有左孩子,又有右孩子
-            if node.lchild and node.rchild:
+            else:
                 # 找到node的后继
                 successor = self.__minelem(node.rchild)
-                successor.rchild = self.__removemin(node.rchild)
+                successor.rchild = self.__remove(node.rchild, successor.key)
                 successor.lchild = node.lchild
                 node.lchild = node.rchild = None
-                return successor
+                retnode = successor
+
+        # 对即将返回的结点retnode进行维护
+        if retnode is None:
+            return None
+        # 更新结点height
+        retnode.height = 1 + max(self.__get_height(retnode.lchild), self.__get_height(retnode.rchild))
+        # 计算平衡因子
+        balancefactor = self.__get_balance_factor(retnode)
+
+        """维护平衡"""
+        # 不平衡发生在向该结点左侧的左侧添加结点时(LL),对该结点右旋
+        if balancefactor > 1 and self.__get_balance_factor(retnode.lchild) >= 0:
+            return self.__right_rotate(retnode)
+        # 不平衡发生在向该结点左侧的右侧添加结点时(LR),对该结点的左孩子左旋,再对该节点右旋
+        if balancefactor > 1 and self.__get_balance_factor(retnode.lchild) < 0:
+            retnode.lchild = self.__left_rotate(retnode.lchild)
+            return self.__right_rotate(retnode)
+        # 不平衡发生在向该结点右侧的左侧添加结点时(RL),对该结点的右孩子右旋,再对该节点左旋
+        if balancefactor < -1 and self.__get_balance_factor(retnode.rchild) > 0:
+            retnode.rchild = self.__right_rotate(retnode.rchild)
+            return self.__left_rotate(retnode)
+        # 不平衡发生在向该结点右侧的右侧添加结点时(RR),对该结点左旋
+        if balancefactor < -1 and self.__get_balance_factor(retnode.rchild) <= 0:
+            return self.__left_rotate(retnode)
+
+        return retnode
