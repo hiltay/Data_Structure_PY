@@ -2,8 +2,8 @@
 # -*- coding:utf-8 -*-
 
 
-# 二叉搜索树:映射
-class BSTMap:
+# 红黑树
+class RBTree:
     # 定义节点
     class __Node:
         def __init__(self, key=None, value=None, lchild=None, rchild=None):
@@ -11,10 +11,17 @@ class BSTMap:
             self.value = value
             self.lchild = lchild
             self.rchild = rchild
+            self.color = True  # True红色,False黑色
 
     def __init__(self):
         self.__root = None
         self.__size = 0
+
+    # 结点是否为红色
+    def __is_red(self, node):
+        if node is None:
+            return False
+        return node.color
 
     # 节点数
     def get_size(self):
@@ -24,9 +31,43 @@ class BSTMap:
     def is_empty(self):
         return self.__size == 0
 
+    # 左旋,返回新树的根
+    #                  y                                        x
+    #                /   \                                    /   \
+    #              T1     x              左旋                y      T3
+    #                   /   \        ------------>         /  \
+    #                 T2     T3                          T1    T2
+    def __left_rotate(self, y):
+        x = y.rchild
+        y.rchild = x.lchild
+        x.lchild = y
+        x.color = y.color
+        y.color = True
+        return x
+
+    # 右旋,返回新树的根
+    #                 y                                        x
+    #               /   \                                    /   \
+    #              x     T3              右旋               T1     y
+    #            /   \               ------------>               /   \
+    #          T1     T2                                        T2    T3
+    def __right_rotate(self, y):
+        x = y.lchild
+        y.lchild = x.rchild
+        x.rchild = y
+        x.color = y.color
+        y.color = True  # 表示x、y融合在一起,还是一棵23树
+        return x
+
+    # 颜色转换
+    def __flip_colors(self, node):
+        node.lchild = node.rchild = False
+        node.color = True
+
     # 添加key,value
     def add(self, key, value):
         self.__root = self.__add(self.__root, key, value)
+        self.__root.color = False
 
     # 以node为根添加key,value(递归实现)
     def __add(self, node, key, value):
@@ -40,6 +81,17 @@ class BSTMap:
             node.rchild = self.__add(node.rchild, key, value)
         else:  # key == node.key,树中已存在该key,修改value
             node.value = value
+
+        # 右孩子是红色, 左孩子是黑色, 左旋转
+        if self.__is_red(node.rchild) and not self.__is_red(node.lchild):
+            node = self.__left_rotate(node)
+        # 左孩子是红色, 左孙子也是红色, 右旋转
+        if self.__is_red(node.lchild) and self.__is_red(node.lchild.lchild):
+            node = self.__right_rotate(node)
+        # 左孩子、右孩子都是红色, 颜色转换
+        if self.__is_red(node.lchild) and self.__is_red(node.rchild):
+            self.__flip_colors(node)
+
         return node
 
     # 返回node为根结点的树中,key所在的结点
@@ -128,3 +180,5 @@ class BSTMap:
                 successor.lchild = node.lchild
                 node.lchild = node.rchild = None
                 return successor
+
+t = RBTree()
