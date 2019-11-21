@@ -141,7 +141,7 @@ class RBTree:
         node.lchild = self.__removemin(node.lchild)
         return node
 
-    # 删除key对应结点,并返回value
+    # todo 删除key对应结点,并返回value
     def remove(self, key):
         node = self.__getnode(self.__root, key)
         if node:  # node不为空
@@ -181,4 +181,3 @@ class RBTree:
                 node.lchild = node.rchild = None
                 return successor
 
-t = RBTree()
