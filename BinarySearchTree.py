@@ -4,8 +4,7 @@ import LinkListStack
 import LinkListQueue
 
 
-# 二叉搜索树,不含重复元素
-# todo 包含重复元素的二叉搜索树
+# 二叉搜索树,包含重复元素
 class BST:
     # 定义节点
     class __Node:
@@ -36,7 +35,7 @@ class BST:
             self.__size += 1
             return self.__Node(e)
 
-        if e < node.elem:
+        if e <= node.elem:
             node.lchild = self.__add(node.lchild, e)
         if e > node.elem:
             node.rchild = self.__add(node.rchild, e)
@@ -134,7 +133,7 @@ class BST:
             return node
         return self.__minelem(node.lchild)
 
-    # 删除最小元素(递归实现)
+    # 删除一个最小元素(递归实现)
     def removemin(self):
         r = self.minelem()
         self.__root = self.__removemin(self.__root)
@@ -163,7 +162,7 @@ class BST:
             return node
         return self.__maxelem(node.rchild)
 
-    # 删除最大元素(递归实现)
+    # 删除一个最大元素(递归实现)
     def removemax(self):
         r = self.maxelem()
         self.__root = self.__removemax(self.__root)
@@ -180,19 +179,23 @@ class BST:
         node.rchild = self.__removemax(node.rchild)
         return node
 
-    # 删除元素e
+    # 删除一个元素e
     def remove(self, e):
         self.__root = self.__remove(self.__root, e)
 
+    # 删除所有元素e
+    def removeall(self, e):
+        self.__root = self.__remove(self.__root, e, True)
+
     # 删除以node为根的树中元素e.返回删除后的树的根
-    def __remove(self, node, e):
+    def __remove(self, node, e, removeall=False):
         if node is None:
             return None
         if e < node.elem:
-            node.lchild = self.__remove(node.lchild, e)
+            node.lchild = self.__remove(node.lchild, e, removeall)
             return node
         if e > node.elem:
-            node.rchild = self.__remove(node.rchild, e)
+            node.rchild = self.__remove(node.rchild, e, removeall)
             return node
         # 找到待删除元素e
         if e == node.elem:
@@ -204,12 +207,16 @@ class BST:
                 return rightnode
             # node右孩子为空,用其左孩子替换node
             if node.rchild is None:
+                if removeall and e == node.lchild.elem:
+                    node.lchild = self.__remove(node.lchild, e, removeall)
                 leftnode = node.lchild
                 node.lchild = None
                 self.__size -= 1
                 return leftnode
             # node既有左孩子,又有右孩子
             if node.lchild and node.rchild:
+                if removeall and e == node.lchild.elem:
+                    node.lchild = self.__remove(node.lchild, e, removeall)
                 # 找到node的后继 todo：也可以找node的前驱
                 successor = self.__minelem(node.rchild)
                 successor.rchild = self.__removemin(node.rchild)
@@ -218,8 +225,8 @@ class BST:
                 return successor
 
 
-"""
-测试用例
+# """
+# 测试用例
 tree = BST()
 tree.add(6)
 tree.add(3)
@@ -227,11 +234,19 @@ tree.add(2)
 tree.add(0)
 tree.add(5)
 tree.add(10)
+tree.add(0)
+tree.add(0)
+tree.add(5)
+tree.add(5)
 tree.add(13)
+tree.add(20)
 tree.add(20)
 tree.add(7)
 tree.add(8)
-# tree.preorder()
-tree.remove(6)
-tree.preorder()
-"""
+tree.add(1)
+tree.remove(0)
+tree.removeall(5)
+tree.removemin()
+tree.removemax()
+tree.inorder()
+# """
