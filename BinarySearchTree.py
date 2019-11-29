@@ -225,8 +225,8 @@ class BST:
                 return successor
 
 
-# """
-# 测试用例
+"""
+测试用例
 tree = BST()
 tree.add(6)
 tree.add(3)
@@ -249,4 +249,4 @@ tree.removeall(5)
 tree.removemin()
 tree.removemax()
 tree.inorder()
-# """
+"""
